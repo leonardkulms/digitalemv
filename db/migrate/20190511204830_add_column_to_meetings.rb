@@ -2,7 +2,7 @@
 
 class AddColumnToMeetings < ActiveRecord::Migration[5.2]
   def change
-    t.string :name
-    t.text :description
+    add_column :meetings, :name, :string
+    add_column :meetings, :description, :text
   end
 end
