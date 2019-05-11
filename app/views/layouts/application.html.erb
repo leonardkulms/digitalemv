@@ -9,6 +9,16 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
+  <% unless current_user %>
+    <%= link_to 'Log In', '/auth/slack', method: :get %>
+  <% else %>
+    <%= link_to 'Log Out', sessions_destroy_path, method: :get %>
+  <%end%>
+
+  <% if flash[:notice] %>
+    <div id="notice"><%= flash[:notice] %></div>
+  <% end %>
+
   <body>
     <%= yield %>
   </body>
