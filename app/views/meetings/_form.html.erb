@@ -1,4 +1,6 @@
-<%= form_with(model: meeting, local: true) do |form| %>
+<%= form_for @meeting do |form| %>
+  <%= form.text_field :name %>
+  <%= form.text_area :description %>
   <% if meeting.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(meeting.errors.count, "error") %> prohibited this meeting from being saved:</h2>
