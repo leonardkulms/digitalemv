@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :meetings
+  resources :meetings do
+    member do
+      put 'agree'
+      get 'agree'
+    end
+  end
+
   get 'sessions/landingpage'
   root 'sessions#landingpage'
   get '/auth/:provider/callback', to: 'sessions#create'
