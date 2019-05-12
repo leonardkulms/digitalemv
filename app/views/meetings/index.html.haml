@@ -1,0 +1,21 @@
+%h1 Meetings
+
+%table
+  %thead
+    %tr
+      %th(colspan="3")
+  %tbody
+    - @meetings.each do |meeting|
+      %tr
+        %td= meeting.name
+        %td= meeting.description
+        %td= link_to 'Show', meeting_path(meeting)
+        - if current_user.is_admin
+          %td= link_to 'Edit', edit_meeting_path(meeting)
+          %td= link_to 'Destroy', meeting, method: :delete, data: { confirm: 'Are you sure?' }
+
+<br>
+
+- if current_user.is_admin
+  = link_to 'New Meeting', new_meeting_path
+  = link_to 'New Admin', users_path

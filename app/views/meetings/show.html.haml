@@ -1,0 +1,27 @@
+%h1= @meeting.name
+%p
+  = @meeting.description
+
+%h3 
+  Hände dafür:
+  = @agreements.select { |a| a.status == "positive" }.length
+%h3 
+  Hände dagegen: 
+  = @agreements.select { |a| a.status == "negative" }.length
+%h3
+  Hände enthalten:
+  = @agreements.select { |a| a.status == "neutral" }.length
+
+
+-@agreements.each do |am|
+  = am.user.name
+
+-if @agreements.where(user: current_user).empty?
+  = link_to 'Agree', agree_meeting_path(@meeting)
+  = link_to 'Disagree', disagree_meeting_path(@meeting)
+  = link_to 'Abstain', abstain_meeting_path(@meeting)
+
+- if current_user.is_admin
+  = link_to 'Edit', edit_meeting_path(@meeting)
+
+= link_to 'Back', meetings_path
