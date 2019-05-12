@@ -2,7 +2,7 @@
 
 class SessionsController < ApplicationController
   skip_before_action :require_login, only: %i[create landingpage]
-  skip_before_action :admin_zone, only: %i[create landingpage]
+  skip_before_action :admin_zone, only: %i[create landingpage destroy]
 
   def create
     auth_hash = request.env['omniauth.auth']

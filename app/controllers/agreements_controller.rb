@@ -29,7 +29,7 @@ class AgreementsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_agreement
-    @agreement = Agreement.find(params[:id])
+    @agreement = current_user.agreements.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
