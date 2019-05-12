@@ -3,8 +3,12 @@
 Rails.application.routes.draw do
   resources :meetings do
     member do
-      put 'agree'
       get 'agree'
+      get 'disagree'
+      get 'abstain'
+      put 'agree'
+      put 'disagree'
+      put 'abstain'
     end
   end
   resources :users, only: %i[index edit update]

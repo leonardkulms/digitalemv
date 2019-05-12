@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class MeetingsController < ApplicationController
-  before_action :set_meeting, only: %i[show edit update destroy agree]
-
+  before_action :set_meeting, only: %i[show edit update destroy agree disagree abstain]
+  skip_before_action :admin_zone, only: %i[index show agree disagree abstain]
   # GET /meetings
   # GET /meetings.json
   def index
@@ -16,9 +16,19 @@ class MeetingsController < ApplicationController
   end
 
   def agree
-    @agreement = Agreement.create!(user: current_user, meeting: @meeting)
+    @agreement = Agreement.create!(user: current_user, meeting: @meeting, status: :positive)
     redirect_to @meeting
   end
+
+  def disagree
+    @agreement = Agreement.create!(user: current_user, meeting: @meeting, status: :negative)
+    redirect_to @meeting
+ end
+
+  def abstain
+    @agreement = Agreement.create!(user: current_user, meeting: @meeting, status: :neutral)
+    redirect_to @meeting
+ end
 
   # GET /meetings/new
   def new

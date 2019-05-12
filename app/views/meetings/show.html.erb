@@ -3,9 +3,9 @@
   <%= @meeting.description %>
 </p>
 
-<h3>Hände dafür: <%= @agreements.length %> </h3>
-<h3>Hände dagegen: <%= @agreements.length %> </h3>
-<h3>Hände enthalten: <%= @agreements.length %> </h3>
+<h3>Hände dafür: <%= @agreements.select { |a| a.status == "positive" }.length %> </h3>
+<h3>Hände dagegen: <%= @agreements.select { |a| a.status == "negative" }.length %> </h3>
+<h3>Hände enthalten: <%= @agreements.select { |a| a.status == "neutral" }.length %> </h3>
 
 
 <% @agreements.each do |am|%>
@@ -13,8 +13,11 @@
 <% end %>
 
 <% if @agreements.where(user: current_user).empty? %>
-  <%= link_to 'Agree', agree_meeting_path(@meeting)%>
+  <%= link_to 'Agree', agree_meeting_path(@meeting) %>
+  <%= link_to 'Disagree', disagree_meeting_path(@meeting) %>
+  <%= link_to 'Abstain', abstain_meeting_path(@meeting) %>
 <% end %>
+
 <% if current_user.is_admin %>
   <%= link_to 'Edit', edit_meeting_path(@meeting) %>
 

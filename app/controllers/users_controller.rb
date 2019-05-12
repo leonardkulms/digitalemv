@@ -2,6 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[edit update destroy agree]
+
   def index
     @users = User.all
   end
