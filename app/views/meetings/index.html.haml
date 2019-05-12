@@ -14,7 +14,7 @@
           %td= link_to 'Edit', edit_meeting_path(meeting)
           %td= link_to 'Destroy', meeting, method: :delete, data: { confirm: 'Are you sure?' }
 
-<br>
+%br
 
 - if current_user.is_admin
   .button= link_to 'New Meeting', new_meeting_path

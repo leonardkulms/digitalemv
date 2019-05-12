@@ -3,18 +3,15 @@
     %title Digitale MV
     = csrf_meta_tags
     = csp_meta_tag
-
+    %meta(name="viewport" content="width=device-width, initial-scale=1")
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
-  - unless current_user
-    = link_to 'Log In', '/auth/slack', method: :get
-  - else
-    = link_to 'Log Out', sessions_destroy_path, method: :get
+  %body
+    = render 'layouts/navbar'
+    .section
+    
+      - if flash[:notice]
+        #notice= flash[:notice]
 
-  - if flash[:notice]
-    #notice= flash[:notice]
-
-  %body.container
-
-    = yield
+      = yield
