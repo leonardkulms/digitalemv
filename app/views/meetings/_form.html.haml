@@ -1,13 +1,10 @@
 = form_for @meeting do |form|
-  = form.text_field :name
-  = form.text_area :description
-  -if meeting.errors.any?
-    #error_explanation
-    %h2= pluralize(meeting.errors.count, "error") prohibited this meeting from being saved:
-
-      %ul
-        -meeting.errors.full_messages.each do |message|
-          %li= message
-  
-  .actions
-    = form.submit
+    = form.label :name
+    = form.text_field :name, class: "input"
+    %br
+    = form.label :description
+    = form.text_area :description, class: "textarea"
+    %br
+    
+    .actions
+        = form.submit class: "button is-primary"
