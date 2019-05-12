@@ -1,15 +1,22 @@
-<%= @meeting.name %>
-<%= @meeting.description %>
+<h1> <%= @meeting.name %> </h1>
+<p> 
+  <%= @meeting.description %>
+</p>
 
-<h1>Number of Agreements: </h1>
-<%= @agreements.length %>
+<h3>Hände dafür: <%= @agreements.length %> </h3>
+<h3>Hände dagegen: <%= @agreements.length %> </h3>
+<h3>Hände enthalten: <%= @agreements.length %> </h3>
+
 
 <% @agreements.each do |am|%>
-<%= am.user.name%>
+  <%= am.user.name%>
 <% end %>
 
 <% if @agreements.where(user: current_user).empty? %>
   <%= link_to 'Agree', agree_meeting_path(@meeting)%>
 <% end %>
-<%= link_to 'Edit', edit_meeting_path(@meeting) %> |
+<% if current_user.is_admin %>
+  <%= link_to 'Edit', edit_meeting_path(@meeting) %>
+
+<% end %>
 <%= link_to 'Back', meetings_path %>

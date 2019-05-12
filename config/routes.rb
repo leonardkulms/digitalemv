@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       get 'agree'
     end
   end
-
+  resources :users, only: %i[index edit update]
   get 'sessions/landingpage'
   root 'sessions#landingpage'
   get '/auth/:provider/callback', to: 'sessions#create'
