@@ -19,6 +19,7 @@ gem 'uglifier', '>= 1.3.0'
 # gem 'mini_racer', platforms: :ruby
 
 gem "haml"
+gem 'bulma-rails', '~> 0.7.4'
 # auth
 
 gem 'ginjo-omniauth-slack', require: 'omniauth-slack'

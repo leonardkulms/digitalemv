@@ -4,9 +4,8 @@
     - if user.is_admin
       = form.hidden_field :is_admin, :value => false
     - else
-      <%= form.hidden_field :is_admin, :value => true %>
-  
-  
+      = form.hidden_field :is_admin, :value => true
+
     .actions
       = user.name
       = user.is_admin
