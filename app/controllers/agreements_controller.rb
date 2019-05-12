@@ -16,7 +16,7 @@ class AgreementsController < ApplicationController
 
     respond_to do |format|
       if @agreement.save
-        format.html { redirect_to @agreement, notice: 'Agreement was successfully created.' }
+        format.html { redirect_to @agreement, only_path: true, notice: 'Agreement was successfully created.' }
         format.json { render :show, status: :created, location: @agreement }
       else
         format.html { render :new }

@@ -17,17 +17,17 @@ class MeetingsController < ApplicationController
 
   def agree
     @agreement = Agreement.create!(user: current_user, meeting: @meeting, status: :positive)
-    redirect_to @meeting
+    redirect_to @meeting, only_path: true
   end
 
   def disagree
     @agreement = Agreement.create!(user: current_user, meeting: @meeting, status: :negative)
-    redirect_to @meeting
+    redirect_to @meeting, only_path: true
  end
 
   def abstain
     @agreement = Agreement.create!(user: current_user, meeting: @meeting, status: :neutral)
-    redirect_to @meeting
+    redirect_to @meeting, only_path: true
  end
 
   # GET /meetings/new
@@ -45,7 +45,7 @@ class MeetingsController < ApplicationController
 
     respond_to do |format|
       if @meeting.save
-        format.html { redirect_to @meeting, notice: 'Meeting was successfully created.' }
+        format.html { redirect_to @meeting, only_path: true, notice: 'Meeting was successfully created.' }
         format.json { render :show, status: :created, location: @meeting }
       else
         format.html { render :new }
@@ -59,7 +59,7 @@ class MeetingsController < ApplicationController
   def update
     respond_to do |format|
       if @meeting.update(meeting_params)
-        format.html { redirect_to @meeting, notice: 'Meeting was successfully updated.' }
+        format.html { redirect_to @meeting, only_path: true, notice: 'Meeting was successfully updated.' }
         format.json { render :show, status: :ok, location: @meeting }
       else
         format.html { render :edit }
@@ -73,7 +73,7 @@ class MeetingsController < ApplicationController
   def destroy
     @meeting.destroy
     respond_to do |format|
-      format.html { redirect_to meetings_url, notice: 'Meeting was successfully destroyed.' }
+      format.html { redirect_to meetings_url, only_path: true, notice: 'Meeting was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
