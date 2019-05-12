@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
 class Meeting < ApplicationRecord
-  has_many :users
+  belongs_to :user
+
+  has_many :agreements
+  has_many :agreeing_users, through: :agreements, source: :user
 end

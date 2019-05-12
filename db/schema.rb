@@ -10,23 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_11_213305) do
+ActiveRecord::Schema.define(version: 2019_05_12_011435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "agreements", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "meeting_id"
+    t.index ["meeting_id"], name: "index_agreements_on_meeting_id"
+    t.index ["user_id"], name: "index_agreements_on_user_id"
+  end
 
   create_table "meetings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
     t.text "description"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_meetings_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slack_id"
   end
 
+  add_foreign_key "agreements", "meetings"
+  add_foreign_key "agreements", "users"
+  add_foreign_key "meetings", "users"
 end

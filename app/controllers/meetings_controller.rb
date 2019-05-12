@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MeetingsController < ApplicationController
-  before_action :set_meeting, only: %i[show edit update destroy]
+  before_action :set_meeting, only: %i[show edit update destroy agree]
 
   # GET /meetings
   # GET /meetings.json
@@ -11,11 +11,18 @@ class MeetingsController < ApplicationController
 
   # GET /meetings/1
   # GET /meetings/1.json
-  def show; end
+  def show
+    @agreements = @meeting.agreements
+  end
+
+  def agree
+    @agreement = Agreement.create!(user: current_user, meeting: @meeting)
+    redirect_to @meeting
+  end
 
   # GET /meetings/new
   def new
-    @meeting = Meeting.new
+    @meeting = current_user.meetings.build
   end
 
   # GET /meetings/1/edit
@@ -24,7 +31,7 @@ class MeetingsController < ApplicationController
   # POST /meetings
   # POST /meetings.json
   def create
-    @meeting = Meeting.new(meeting_params)
+    @meeting = current_user.meetings.new(meeting_params)
 
     respond_to do |format|
       if @meeting.save

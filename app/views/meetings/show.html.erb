@@ -1,6 +1,15 @@
-<p id="notice"><%= notice %></p>
-
 <%= @meeting.name %>
 <%= @meeting.description %>
+
+<h1>Number of Agreements: </h1>
+<%= @agreements.length %>
+
+<% @agreements.each do |am|%>
+<%= am.user.name%>
+<% end %>
+
+<% if @agreements.where(user: current_user).empty? %>
+  <%= link_to 'Agree', agree_meeting_path(@meeting)%>
+<% end %>
 <%= link_to 'Edit', edit_meeting_path(@meeting) %> |
 <%= link_to 'Back', meetings_path %>
