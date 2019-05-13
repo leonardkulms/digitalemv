@@ -1,6 +1,6 @@
 .columns
   .column.is-1
-    = link_to 'Back', meetings_path
+    = link_to 'Zurück', meetings_path
   .column
     .container
       .columns
@@ -9,13 +9,13 @@
           .subtitle= @meeting.description
         .column
           - if current_user.is_admin
-            .button= link_to 'Edit', edit_meeting_path(@meeting)
+            .button= link_to 'Bearbeiten', edit_meeting_path(@meeting)
     
     .container
       -if @agreements.where(user: current_user).empty?
-        .button= link_to 'Agree', agree_meeting_path(@meeting)
-        .button= link_to 'Abstain', abstain_meeting_path(@meeting)
-        .button= link_to 'Disagree', disagree_meeting_path(@meeting)
+        .button= link_to 'Zustimmung', agree_meeting_path(@meeting)
+        .button= link_to 'Enthaltung', abstain_meeting_path(@meeting)
+        .button= link_to 'Ablehnung', disagree_meeting_path(@meeting)
 
     .section
 
@@ -24,7 +24,7 @@
         .dropdown-trigger
           %button.button( aria-haspopup="true" aria-controls="dropdown-menu2")
             %span 
-              Dafür:
+              Zustimmung:
               = @agreements.select { |a| a.status == "positive" }.length
             %span.icon.is-small
             %i.fas.fa-angle-down(aria-hidden="true")
@@ -38,7 +38,7 @@
         .dropdown-trigger
           %button.button( aria-haspopup="true" aria-controls="dropdown-menu2")
             %span 
-              Enthalten:
+              Enthaltung:
               = @agreements.select { |a| a.status == "neutral" }.length
             %span.icon.is-small
             %i.fas.fa-angle-down(aria-hidden="true")
@@ -52,7 +52,7 @@
         .dropdown-trigger
           %button.button( aria-haspopup="true" aria-controls="dropdown-menu2")
             %span 
-              Dagegen:
+              Ablehnung:
               = @agreements.select { |a| a.status == "negative" }.length
             %span.icon.is-small
             %i.fas.fa-angle-down(aria-hidden="true")
