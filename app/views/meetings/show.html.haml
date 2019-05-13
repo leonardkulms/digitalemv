@@ -1,27 +1,66 @@
-%h1= @meeting.name
-%p
-  = @meeting.description
+.columns
+  .column.is-1
+    = link_to 'Back', meetings_path
+  .column
+    .container
+      .columns
+        .column
+          .title= @meeting.name
+          .subtitle= @meeting.description
+        .column
+          - if current_user.is_admin
+            .button= link_to 'Edit', edit_meeting_path(@meeting)
+    
+    .container
+      -if @agreements.where(user: current_user).empty?
+        .button= link_to 'Agree', agree_meeting_path(@meeting)
+        .button= link_to 'Abstain', abstain_meeting_path(@meeting)
+        .button= link_to 'Disagree', disagree_meeting_path(@meeting)
 
-%h3 
-  Hände dafür:
-  = @agreements.select { |a| a.status == "positive" }.length
-%h3 
-  Hände dagegen: 
-  = @agreements.select { |a| a.status == "negative" }.length
-%h3
-  Hände enthalten:
-  = @agreements.select { |a| a.status == "neutral" }.length
+    .section
 
+    .container
+      .dropdown.is-hoverable
+        .dropdown-trigger
+          %button.button( aria-haspopup="true" aria-controls="dropdown-menu2")
+            %span 
+              Dafür:
+              = @agreements.select { |a| a.status == "positive" }.length
+            %span.icon.is-small
+            %i.fas.fa-angle-down(aria-hidden="true")
+            .dropdown-menu(id="dropdown-menu2" role="menu")
+              .dropdown-content
+                - @agreements.select { |a| a.status == "positive" }.each do |agreement|
+                  .dropdown-item
+                    %p= agreement.user.name
+      
+      .dropdown.is-hoverable
+        .dropdown-trigger
+          %button.button( aria-haspopup="true" aria-controls="dropdown-menu2")
+            %span 
+              Enthalten:
+              = @agreements.select { |a| a.status == "neutral" }.length
+            %span.icon.is-small
+            %i.fas.fa-angle-down(aria-hidden="true")
+            .dropdown-menu(id="dropdown-menu2" role="menu")
+              .dropdown-content
+                - @agreements.select { |a| a.status == "neutral" }.each do |agreement|
+                  .dropdown-item
+                    %p= agreement.user.name
 
--@agreements.each do |am|
-  = am.user.name
+      .dropdown.is-hoverable
+        .dropdown-trigger
+          %button.button( aria-haspopup="true" aria-controls="dropdown-menu2")
+            %span 
+              Dagegen:
+              = @agreements.select { |a| a.status == "negative" }.length
+            %span.icon.is-small
+            %i.fas.fa-angle-down(aria-hidden="true")
+            .dropdown-menu(id="dropdown-menu2" role="menu")
+              .dropdown-content
+                - @agreements.select { |a| a.status == "negative" }.each do |agreement|
+                  .dropdown-item
+                    %p= agreement.user.name            
 
--if @agreements.where(user: current_user).empty?
-  .button= link_to 'Agree', agree_meeting_path(@meeting)
-  .button= link_to 'Disagree', disagree_meeting_path(@meeting)
-  .button= link_to 'Abstain', abstain_meeting_path(@meeting)
+                  
 
-- if current_user.is_admin
-  .button= link_to 'Edit', edit_meeting_path(@meeting)
-%br
-= link_to 'Back', meetings_path

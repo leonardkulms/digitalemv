@@ -6,3 +6,8 @@
       .button= link_to 'Log In', '/auth/slack', method: :get
     - else
       .button= link_to 'Log Out', sessions_destroy_path, method: :get
+      - if current_user.is_admin
+        .button= link_to 'New Meeting', new_meeting_path
+        .button= link_to 'New Admin', users_path
+    
+
