@@ -10,4 +10,7 @@
       = user.name
       = user.is_admin
 
-      = form.submit class: "button is-primary"
+      - if user.is_admin
+        = form.submit class: "button", value: "Admin - Rechte entfernen"
+      - else
+        = form.submit class: "button", value: "Admin - Rechte hinzufügen"
