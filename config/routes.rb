@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :meetings do
+  resources :meetings
+  resources :users, only: %i[index edit update]
+  resources :mutations, only: %i[new create edit update destroy] do
     member do
       get 'agree'
       get 'disagree'
@@ -11,7 +13,6 @@ Rails.application.routes.draw do
       put 'abstain'
     end
   end
-  resources :users, only: %i[index edit update]
   get 'sessions/landingpage'
   root 'sessions#landingpage'
   get '/auth/:provider/callback', to: 'sessions#create'

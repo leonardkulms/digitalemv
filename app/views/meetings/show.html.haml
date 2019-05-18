@@ -9,58 +9,37 @@
           .subtitle= @meeting.description
         .column
           - if current_user.is_admin
-            .button= link_to 'Bearbeiten', edit_meeting_path(@meeting)
+            .button= link_to 'Titel und Erklärung bearbeiten', edit_meeting_path(@meeting)
+            %br
+            %br
+            .button= link_to 'Satzungsänderung hinzufügen', new_mutation_path(meeting: @meeting)
     
     .container
-      -if @agreements.where(user: current_user).empty?
-        .button= link_to 'Zustimmung', agree_meeting_path(@meeting)
-        .button= link_to 'Enthaltung', abstain_meeting_path(@meeting)
-        .button= link_to 'Ablehnung', disagree_meeting_path(@meeting)
+      -unless @meeting.mutations.empty?
+        - i = 1
+        -@meeting.mutations.each do |mutation|
+          .subtitle= i.to_s + ". Satzungsänderung"
+          - i = i + 1
+          %p= mutation.description
+          %td= link_to 'Bearbeiten', edit_mutation_path(mutation), class: "button"
+          %td= link_to 'Löschen', mutation, method: :delete, data: { confirm: 'Bist Du sicher?' }, class: "button"
 
-    .section
-
-    .container
-      .dropdown.is-hoverable
-        .dropdown-trigger
-          %button.button( aria-haspopup="true" aria-controls="dropdown-menu2")
-            %span 
-              Zustimmung:
-              = @agreements.select { |a| a.status == "positive" }.length
-            %span.icon.is-small
-            %i.fas.fa-angle-down(aria-hidden="true")
-            .dropdown-menu(id="dropdown-menu2" role="menu")
-              .dropdown-content
-                - @agreements.select { |a| a.status == "positive" }.each do |agreement|
-                  .dropdown-item
-                    %p= agreement.user.name
-      
-      .dropdown.is-hoverable
-        .dropdown-trigger
-          %button.button( aria-haspopup="true" aria-controls="dropdown-menu2")
-            %span 
-              Enthaltung:
-              = @agreements.select { |a| a.status == "neutral" }.length
-            %span.icon.is-small
-            %i.fas.fa-angle-down(aria-hidden="true")
-            .dropdown-menu(id="dropdown-menu2" role="menu")
-              .dropdown-content
-                - @agreements.select { |a| a.status == "neutral" }.each do |agreement|
-                  .dropdown-item
-                    %p= agreement.user.name
-
-      .dropdown.is-hoverable
-        .dropdown-trigger
-          %button.button( aria-haspopup="true" aria-controls="dropdown-menu2")
-            %span 
-              Ablehnung:
-              = @agreements.select { |a| a.status == "negative" }.length
-            %span.icon.is-small
-            %i.fas.fa-angle-down(aria-hidden="true")
-            .dropdown-menu(id="dropdown-menu2" role="menu")
-              .dropdown-content
-                - @agreements.select { |a| a.status == "negative" }.each do |agreement|
-                  .dropdown-item
-                    %p= agreement.user.name            
-
-                  
-
+          -if mutation.agreements.where(user: current_user).empty?
+            .button= link_to 'Zustimmen', agree_mutation_path(mutation: mutation)
+            .button= link_to 'Enthalten', abstain_mutation_path(mutation: mutation)
+            .button= link_to 'Ablehnen', disagree_mutation_path(mutation: mutation)
+          -else
+            .container  
+              %span 
+                Zustimmung:
+                = mutation.agreements.select { |a| a.status == "positive" }.length
+              
+              %span 
+                Enthaltung
+                = mutation.agreements.select { |a| a.status == "neutral" }.length
+              
+              %span 
+                Ablehnung:
+                = mutation.agreements.select { |a| a.status == "negative" }.length
+  
+ 

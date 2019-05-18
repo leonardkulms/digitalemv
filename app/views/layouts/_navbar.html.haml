@@ -1,6 +1,6 @@
 %nav.navbar( role="navigation" aria-label="main navigation")
   .navbar-brand
-    = image_tag("VCM_Logo_Signatur.png", :alt => "Venture Club Münster Logo", :class => "navbar-item")
+    = link_to (image_tag("VCM_Logo_Signatur.png", :alt => "Venture Club Münster Logo", :class => "navbar-item")), root_url
   .navbar-item 
     - unless current_user
       .button= link_to 'Log In', '/auth/slack', method: :get
@@ -11,5 +11,3 @@
       .button= link_to 'Neue Mitgliederversammlung', new_meeting_path
     .navbar-item
       .button= link_to 'Neuer Admin', users_path
-    
-
