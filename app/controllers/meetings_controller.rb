@@ -1,12 +1,19 @@
 # frozen_string_literal: true
 
 class MeetingsController < ApplicationController
-  before_action :set_meeting, only: %i[show edit update destroy]
+  before_action :set_meeting, only: %i[show edit update destroy users]
   skip_before_action :admin_zone, only: %i[index show]
   # GET /meetings
   # GET /meetings.json
   def index
     @meetings = Meeting.all
+  end
+
+  def users
+    if @meeting.mutations.first
+      @firstagreements = @meeting.mutations.first.agreements
+      @lastagreements = @meeting.mutations.last.agreements
+    end
   end
 
   # GET /meetings/1
@@ -67,7 +74,7 @@ class MeetingsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_meeting
-    @meeting = current_user.meetings.find(params[:id])
+    @meeting = Meeting.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -2,44 +2,45 @@
   .column.is-1
     = link_to 'Zurück', meetings_path
   .column
-    .container
-      .columns
-        .column
+    .columns
+      .column.has-text-left
+        %span
           .title= @meeting.name
-          .subtitle= @meeting.description
-        .column
           - if current_user.is_admin
-            .button= link_to 'Titel und Erklärung bearbeiten', edit_meeting_path(@meeting)
-            %br
-            %br
-            .button= link_to 'Satzungsänderung hinzufügen', new_mutation_path(meeting: @meeting)
-    
-    .container
-      -unless @meeting.mutations.empty?
-        - i = 1
-        -@meeting.mutations.each do |mutation|
-          .subtitle= i.to_s + ". Satzungsänderung"
-          - i = i + 1
-          %p= mutation.description
-          %td= link_to 'Bearbeiten', edit_mutation_path(mutation), class: "button"
-          %td= link_to 'Löschen', mutation, method: :delete, data: { confirm: 'Bist Du sicher?' }, class: "button"
+            %span
+              .button= link_to 'Titel und Erklärung bearbeiten', edit_meeting_path(@meeting)
+              .button= link_to 'Satzungsänderung hinzufügen', new_mutation_path(meeting: @meeting)
+              .button= link_to 'Teilnehmerliste generieren', users_meeting_path(@meeting)
 
-          -if mutation.agreements.where(user: current_user).empty?
-            .button= link_to 'Zustimmen', agree_mutation_path(mutation: mutation)
-            .button= link_to 'Enthalten', abstain_mutation_path(mutation: mutation)
-            .button= link_to 'Ablehnen', disagree_mutation_path(mutation: mutation)
-          -else
-            .container  
-              %span 
-                Zustimmung:
-                = mutation.agreements.select { |a| a.status == "positive" }.length
-              
-              %span 
-                Enthaltung
-                = mutation.agreements.select { |a| a.status == "neutral" }.length
-              
-              %span 
-                Ablehnung:
-                = mutation.agreements.select { |a| a.status == "negative" }.length
-  
- 
+        .subtitle= @meeting.description
+
+        -unless @meeting.mutations.empty?
+          - i = 1
+          -@meeting.mutations.each do |mutation|
+            .subtitle
+              %span
+                = i.to_s + ". Satzungsänderung"
+                %span 
+                  zugestimmt:
+                  = mutation.agreements.select { |a| a.status == "positive" }.length
+                
+                %span 
+                  enthalten:
+                  = mutation.agreements.select { |a| a.status == "neutral" }.length
+                
+                %span 
+                  abgelehnt:
+                  = mutation.agreements.select { |a| a.status == "negative" }.length
+
+            - i = i + 1
+            %p= mutation.description
+            - if current_user.is_admin
+              %td= link_to 'Bearbeiten', edit_mutation_path(mutation), class: "button"
+              %td= link_to 'Löschen', mutation, method: :delete, data: { confirm: 'Bist Du sicher?' }, class: "button"
+
+            -if mutation.agreements.where(user: current_user).empty?
+              .button= link_to 'Zustimmen', agree_mutation_path(mutation)
+              .button= link_to 'Enthalten', abstain_mutation_path(mutation)
+              .button= link_to 'Ablehnen', disagree_mutation_path(mutation)
+                
+    

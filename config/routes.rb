@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :meetings
+  resources :meetings do
+    member do
+      get 'users'
+    end
+  end
+
   resources :users, only: %i[index edit update]
   resources :mutations, only: %i[new create edit update destroy] do
     member do

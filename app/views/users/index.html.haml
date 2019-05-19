@@ -1,16 +1,47 @@
-- @users.each do |user|
+.title Teilnehmer
 
-  = form_for user do |form|
-    - if user.is_admin
-      = form.hidden_field :is_admin, :value => false
-    - else
-      = form.hidden_field :is_admin, :value => true
 
-    .actions
-      = user.name
-      = user.is_admin
+.columns
+  .column.is-3
+    .subtitle
+      Name
+    - @users.each do |user|
+      %p= user.name
+      %br
+      %br
 
-      - if user.is_admin
-        = form.submit class: "button", value: "Admin - Rechte entfernen"
-      - else
-        = form.submit class: "button", value: "Admin - Rechte hinzufügen"
+  .column.has-text-left
+    .subtitle
+      Admin-Status
+    - @users.each do |user|
+      -if user.is_admin
+        %p Admin
+      -else
+        %p Teilnehmer
+      %br
+      %br
+  .column.is-5
+    .subtitle Aktion
+    - @users.each do |user|
+      = form_for user do |form|
+        - if user.is_admin
+          = form.hidden_field :is_admin, :value => false
+        - else
+          = form.hidden_field :is_admin, :value => true
+
+        .actions
+          - if user.is_admin
+            = form.submit class: "button is-small", value: "Admin - Rechte entfernen"
+          - else
+            = form.submit class: "button is-small", value: "Admin - Rechte hinzufügen"
+      %br
+
+
+
+
+
+
+  
+      
+      
+      
