@@ -1,0 +1,30 @@
+.columns
+  .column.is-1
+    = link_to 'Zurück', @meeting
+  .column
+    .title 
+      Teilnehmerliste für 
+      =@meeting.name
+
+    -if @firstagreements
+      .subtitle
+        = "Insgesamt haben " + @firstagreements.length.to_s + " Personen auf die erste Satzungsänderung reagiert."
+        = "Davon haben " + @lastagreements.length.to_s + " Personen auch auf die letzte Satzungsänderung reagiert."
+
+
+      .columns
+        .column
+          .subtitle
+            Personen, die auf die erste Satzungsänderung reagiert haben:
+          - @firstagreements.each do |agreement|
+            %p= agreement.user.name
+        .column
+          .subtitle
+            Personen, die auf die letzte Satzungsänderung reagiert haben:
+          - @lastagreements.each do |agreement|
+            %p= agreement.user.name
+    -else
+      .subtitle
+        Es gibt noch keine Satzungsänderungen!
+
+

@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
   before_action :require_login
+  before_action :admin_zone
 
   private
 
@@ -17,8 +18,15 @@ class ApplicationController < ActionController::Base
 
   def require_login
     unless current_user
-      flash[:error] = 'You must be logged in to access this section'
+      flash[:error] = 'Dafür musst Du eingeloggt sein!'
       redirect_to root_url # halts request cycle
+    end
+  end
+
+  def admin_zone
+    unless current_user.is_admin
+      flash[:error] = 'Dafür musst Du ein Admin sein!'
+      redirect_to meetings_path
     end
   end
 end

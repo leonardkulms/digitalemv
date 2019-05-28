@@ -1,23 +1,25 @@
 # frozen_string_literal: true
 
 class MeetingsController < ApplicationController
-  before_action :set_meeting, only: %i[show edit update destroy agree]
-
+  before_action :set_meeting, only: %i[show edit update destroy users]
+  skip_before_action :admin_zone, only: %i[index show]
   # GET /meetings
   # GET /meetings.json
   def index
     @meetings = Meeting.all
   end
 
+  def users
+    if @meeting.mutations.first
+      @firstagreements = @meeting.mutations.first.agreements
+      @lastagreements = @meeting.mutations.last.agreements
+    end
+  end
+
   # GET /meetings/1
   # GET /meetings/1.json
   def show
-    @agreements = @meeting.agreements
-  end
-
-  def agree
-    @agreement = Agreement.create!(user: current_user, meeting: @meeting)
-    redirect_to @meeting
+    # @agreements = @meeting.agreements
   end
 
   # GET /meetings/new
@@ -35,7 +37,7 @@ class MeetingsController < ApplicationController
 
     respond_to do |format|
       if @meeting.save
-        format.html { redirect_to @meeting, notice: 'Meeting was successfully created.' }
+        format.html { redirect_to @meeting, only_path: true, notice: 'Mitgliederversammlung erfolgreich erstellt.' }
         format.json { render :show, status: :created, location: @meeting }
       else
         format.html { render :new }
@@ -49,7 +51,7 @@ class MeetingsController < ApplicationController
   def update
     respond_to do |format|
       if @meeting.update(meeting_params)
-        format.html { redirect_to @meeting, notice: 'Meeting was successfully updated.' }
+        format.html { redirect_to @meeting, only_path: true, notice: 'Mitgliederversammlung erfolgreich bearbeitet.' }
         format.json { render :show, status: :ok, location: @meeting }
       else
         format.html { render :edit }
@@ -63,7 +65,7 @@ class MeetingsController < ApplicationController
   def destroy
     @meeting.destroy
     respond_to do |format|
-      format.html { redirect_to meetings_url, notice: 'Meeting was successfully destroyed.' }
+      format.html { redirect_to meetings_url, only_path: true, notice: 'Mitgliederversammlung erfolgreich gelöscht.' }
       format.json { head :no_content }
     end
   end

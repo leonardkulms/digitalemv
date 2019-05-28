@@ -1,0 +1,8 @@
+= form_for @meeting do |form|
+    = form.label :name, "Name"
+    = form.text_field :name, class: "input"
+    %br
+    = form.label :description, "Erklärungen"
+    = form.text_area :description, class: "textarea"
+    .actions
+        = form.submit class: "button", value: "Fertig"

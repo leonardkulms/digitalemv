@@ -1,0 +1,36 @@
+matrix:
+  include:
+    - language: ruby
+      cache:
+        bundler: true
+        yarn: true
+      env:
+        - PRECOMMIT=false
+        - DISABLE_SPRING=true
+      before_install:
+        - gem install bundler --no-document
+        - yarn install
+      bundler_args: --without development
+      before_script:
+        - bin/rails db:test:prepare
+      script:
+        #### Security checks:
+        # The gems for these checks are installed directly using gem install instead of
+        # being installed via bundler. This is because we always want to use the latest
+        # version for checking, instead of having to update the version in Gemfile.lock.
+
+        # Brakeman uses static code analysis to find vulnerabilities in the Rails app
+        # The --run-all-checks enables some additional checks
+        # The --interprocedural flag enables brakeman to detect user input through one
+        #  method call within a controller. This feature is marked experimental, so
+        #  it might cause false positives or other strange behaviour.
+        - gem install brakeman
+        - brakeman --run-all-checks --interprocedural --no-pager --exit-on-warn --exit-on-error
+          # Bundler-Audit checks the dependency versions from Gemfile.lock for known,
+          # reported vulnerabilities.
+        - gem install bundler-audit
+        - bundle audit check --update
+          # Rubocop
+      addons:
+        chrome: stable
+        postgresql: 9.6

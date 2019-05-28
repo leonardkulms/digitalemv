@@ -1,0 +1,7 @@
+= form_for @mutation do |form|
+    = form.label :description, "Satzungsänderung"
+    = form.text_area :description, class: "textarea"
+    = hidden_field_tag :meeting, @meeting.id
+    
+    .actions
+        = form.submit class: "button", value: "Fertig"

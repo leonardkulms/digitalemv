@@ -3,11 +3,21 @@
 Rails.application.routes.draw do
   resources :meetings do
     member do
-      put 'agree'
-      get 'agree'
+      get 'users'
     end
   end
 
+  resources :users, only: %i[index edit update]
+  resources :mutations, only: %i[new create edit update destroy] do
+    member do
+      get 'agree'
+      get 'disagree'
+      get 'abstain'
+      put 'agree'
+      put 'disagree'
+      put 'abstain'
+    end
+  end
   get 'sessions/landingpage'
   root 'sessions#landingpage'
   get '/auth/:provider/callback', to: 'sessions#create'

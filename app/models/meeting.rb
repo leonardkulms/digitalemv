@@ -2,7 +2,5 @@
 
 class Meeting < ApplicationRecord
   belongs_to :user
-
-  has_many :agreements
-  has_many :agreeing_users, through: :agreements, source: :user
+  has_many :mutations, dependent: :destroy
 end

@@ -1,0 +1,20 @@
+.title Mitgliederversammlungen
+
+
+.columns
+  .column.is-3
+    .subtitle
+      Name
+    - @meetings.each do |meeting|
+      %p= link_to meeting.name, meeting_path(meeting)
+  .column.has-text-left
+    .subtitle
+      Satzungsänderungen
+    - @meetings.each do |meeting|
+      %p= meeting.description[0...150] +"..."
+
+  - if current_user.is_admin
+    .column.is-5
+      .subtitle Aktion
+      - @meetings.each do |meeting|
+        = link_to 'Löschen', meeting, method: :delete, data: { confirm: 'Bist Du sicher?' }, class:"button"

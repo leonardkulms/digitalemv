@@ -1,24 +1,12 @@
+# frozen_string_literal: true
+
 class AgreementsController < ApplicationController
-  before_action :set_agreement, only: [:show, :edit, :update, :destroy]
-
-  # GET /agreements
-  # GET /agreements.json
-  def index
-    @agreements = Agreement.all
-  end
-
-  # GET /agreements/1
-  # GET /agreements/1.json
-  def show
-  end
+  before_action :set_agreement, only: %i[show edit update destroy]
+  skip_before_action :admin_zone, only: %i[new create]
 
   # GET /agreements/new
   def new
     @agreement = Agreement.new
-  end
-
-  # GET /agreements/1/edit
-  def edit
   end
 
   # POST /agreements
@@ -28,7 +16,7 @@ class AgreementsController < ApplicationController
 
     respond_to do |format|
       if @agreement.save
-        format.html { redirect_to @agreement, notice: 'Agreement was successfully created.' }
+        format.html { redirect_to @agreement, only_path: true, notice: 'Reaktion wurde erstellt.' }
         format.json { render :show, status: :created, location: @agreement }
       else
         format.html { render :new }
@@ -37,38 +25,15 @@ class AgreementsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /agreements/1
-  # PATCH/PUT /agreements/1.json
-  def update
-    respond_to do |format|
-      if @agreement.update(agreement_params)
-        format.html { redirect_to @agreement, notice: 'Agreement was successfully updated.' }
-        format.json { render :show, status: :ok, location: @agreement }
-      else
-        format.html { render :edit }
-        format.json { render json: @agreement.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /agreements/1
-  # DELETE /agreements/1.json
-  def destroy
-    @agreement.destroy
-    respond_to do |format|
-      format.html { redirect_to agreements_url, notice: 'Agreement was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_agreement
-      @agreement = Agreement.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def agreement_params
-      params.fetch(:agreement, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_agreement
+    @agreement = current_user.agreements.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def agreement_params
+    params.fetch(:agreement, {})
+  end
 end
