@@ -20,17 +20,17 @@
             .subtitle
               %span
                 = i.to_s + ". Satzungsänderung"
-                %span 
-                  zugestimmt:
-                  = mutation.agreements.select { |a| a.status == "positive" }.length
-                
-                %span 
-                  enthalten:
-                  = mutation.agreements.select { |a| a.status == "neutral" }.length
-                
-                %span 
-                  abgelehnt:
-                  = mutation.agreements.select { |a| a.status == "negative" }.length
+              %div
+                zugestimmt:
+                = mutation.agreements.select { |a| a.status == "positive" }.length
+              
+              %div 
+                enthalten:
+                = mutation.agreements.select { |a| a.status == "neutral" }.length
+              
+              %div 
+                abgelehnt:
+                = mutation.agreements.select { |a| a.status == "negative" }.length
 
             - i = i + 1
             %p= mutation.description
