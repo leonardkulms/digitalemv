@@ -5,12 +5,12 @@ class MutationsController < ApplicationController
   skip_before_action :admin_zone, only: %i[agree disagree abstain]
 
   def new
-    @mutation = current_user.meetings.find(params[:meeting]).mutations.build
-    @meeting = current_user.meetings.find(params[:meeting])
+    @mutation = Meeting.find(params[:meeting]).mutations.build
+    @meeting = Meeting.find(params[:meeting])
   end
 
   def create
-    @mutation = current_user.meetings.find(params[:meeting]).mutations.new(mutation_params)
+    @mutation = Meeting.find(params[:meeting]).mutations.new(mutation_params)
 
     respond_to do |format|
       if @mutation.save

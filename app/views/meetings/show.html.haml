@@ -17,23 +17,26 @@
         -unless @meeting.mutations.empty?
           - i = 1
           -@meeting.mutations.each do |mutation|
-            .subtitle
-              %span
-                = i.to_s + ". Satzungsänderung"
-              %div
-                zugestimmt:
-                = mutation.agreements.select { |a| a.status == "positive" }.length
-              
-              %div 
-                enthalten:
-                = mutation.agreements.select { |a| a.status == "neutral" }.length
-              
-              %div 
-                abgelehnt:
-                = mutation.agreements.select { |a| a.status == "negative" }.length
+            .columns
+              .column.is-4
+                .subtitle
+                  %span
+                    = i.to_s + ". Satzungsänderung"
+                  %div
+                    zugestimmt:
+                    = mutation.agreements.select { |a| a.status == "positive" }.length
+                  
+                  %div 
+                    enthalten:
+                    = mutation.agreements.select { |a| a.status == "neutral" }.length
+                  
+                  %div 
+                    abgelehnt:
+                    = mutation.agreements.select { |a| a.status == "negative" }.length
 
-            - i = i + 1
-            %p= mutation.description
+                - i = i + 1
+              .column.has-text-left
+                %p.subtitle= mutation.description
             - if current_user.is_admin
               %td= link_to 'Bearbeiten', edit_mutation_path(mutation), class: "button"
               %td= link_to 'Löschen', mutation, method: :delete, data: { confirm: 'Bist Du sicher?' }, class: "button"
