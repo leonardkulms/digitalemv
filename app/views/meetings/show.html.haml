@@ -37,13 +37,14 @@
                 - i = i + 1
               .column.has-text-left
                 %p.subtitle= mutation.description
+                -if mutation.agreements.where(user: current_user).empty?
+                  .button= link_to 'Zustimmen', agree_mutation_path(mutation)
+                  .button= link_to 'Enthalten', abstain_mutation_path(mutation)
+                  .button= link_to 'Ablehnen', disagree_mutation_path(mutation)
             - if current_user.is_admin
               %td= link_to 'Bearbeiten', edit_mutation_path(mutation), class: "button"
               %td= link_to 'Löschen', mutation, method: :delete, data: { confirm: 'Bist Du sicher?' }, class: "button"
 
-            -if mutation.agreements.where(user: current_user).empty?
-              .button= link_to 'Zustimmen', agree_mutation_path(mutation)
-              .button= link_to 'Enthalten', abstain_mutation_path(mutation)
-              .button= link_to 'Ablehnen', disagree_mutation_path(mutation)
+            
                 
     
